@@ -8,10 +8,19 @@ export const authConfig = {
         clientSecret: process.env.GITHUB_CLIENT_SECRET,
     })
   ],
+  session: {
+    strategy: "jwt",
+  },
   callbacks: {
-    session: async ({ session, user }) => {
-      if (session?.user && user?.id) {
-        session.user.id = user.id;
+    jwt({ token, user }) {
+      if (user) { // User is available during sign-in
+        token.id = user.id
+      }
+      return token
+    },
+    session({ session, token }) {
+      if (session.user && token.id) {
+        session.user.id = token.id as string;
       }
       return session;
     },

@@ -1,4 +1,7 @@
-export { auth as middleware } from "./auth"
+import NextAuth from "next-auth";
+import { authConfig } from "./auth.config";
+
+export default NextAuth(authConfig).auth;
 
 export const config = {
   // Matches all routes except api/auth endpoints and static next.js files
